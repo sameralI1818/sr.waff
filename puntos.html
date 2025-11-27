@@ -1,0 +1,825 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>SR.WAFF</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+<style>
+@font-face {
+  font-family: "BullesDeChocolats";
+  src: url("fonts/BULLES DE CHOCOLATS.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+:root {
+  --morado: #54127e;
+  --morado-oscuro: #5d2f7b;
+  --blanco: #fff;
+  --gris: #f5f5f5;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+body {
+  background: var(--gris);
+  color: #333;
+}
+
+header {
+  background: var(--morado);
+  color: var(--blanco);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 25px;
+}
+
+.logo-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.logo-img {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.logo-text {
+  font-size: 1.8rem;
+  color: var(--blanco);
+  font-family: 'BullesDeChocolats', cursive;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+}
+
+
+nav ul {
+  display: flex;
+  list-style: none;
+  gap: 20px;
+}
+
+nav a {
+  font-family: "BullesDeChocolats", cursive;
+  color: var(--blanco);
+  font-size: 1.2rem;
+  text-decoration: none;
+}
+
+/* ------------------ MENU HAMBURGUESA ------------------ */
+.hamburger {
+  display: none;
+  font-size: 2rem;
+  cursor: pointer;
+}
+.close-icon {
+  display: none;
+  font-size: 2rem;
+  cursor: pointer;
+}
+.hamburger.active {
+  transform: rotate(90deg);
+}
+
+
+@media (max-width: 768px) {
+  nav ul {
+    position: absolute;
+    top: 85px;
+    right: 0;
+    background: var(--morado);
+    width: 100%;
+    flex-direction: column;
+    padding: 20px 0;
+    text-align: center;
+    display: none;
+  }
+
+  nav ul.show {
+    display: flex;
+  }
+
+  .hamburger {
+    display: block;
+  }
+}
+
+section {
+  padding: 60px 20px;
+  max-width: 1100px;
+  margin: auto;
+}
+
+h2,
+ h3 {
+  font-family: "BullesDeChocolats", cursive;
+  color: var(--morado);
+}
+
+.cards-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 25px;
+}
+
+.card {
+  background: var(--blanco);
+  border-radius: 15px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding-bottom: 20px;
+  overflow: hidden;
+}
+
+.card-content {
+  padding: 20px;
+}
+
+.card button {
+  margin: 10px auto;
+  display: block;
+  background: var(--morado);
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 25px;
+  cursor: pointer;
+  font-family: "BullesDeChocolats", cursive;
+  transition: 0.3s;
+}
+
+.card button:hover {
+  background: var(--morado-oscuro);
+}
+
+.mapa {
+  width: 100%;
+  height: 0;
+  overflow: hidden;
+  transition: height 0.4s ease;
+  border-top: 2px solid var(--morado);
+}
+
+.mapa iframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo-container">
+    <img src="img/sr.waff-logo.png" class="logo-img" />
+    <span class="logo-text">Sr. Waff</span>
+  </div>
+
+  <i class="fa-solid fa-bars hamburger" id="hamburger"></i>
+<i class="fa-solid fa-xmark close-icon" id="closeIcon" style="display:none"></i>
+
+  <nav>
+    <ul id="menu">
+      <li><a href="inicio.html">Inicio</a></li>
+      <li><a href="distribuidores.html">Distribuidores</a></li>
+      <li><a href="puntos.html">Puntos</a></li>
+    </ul>
+  </nav>
+</header>
+
+<section id="puntos">
+  <h2>Puntos de Venta</h2>
+  <p>Encuentra los helados <strong>Sr. Waff</strong> en tiendas especializadas y parques pet-friendly.</p>
+
+  <input
+    type="text"
+    id="search"
+    placeholder="Buscar por ciudad o nombre..."
+    style="
+      width: 100%;
+      padding: 12px 15px;
+      margin: 20px 0;
+      border: 2px solid var(--morado);
+      border-radius: 10px;
+      font-size: 1rem;
+      outline: none;
+    "
+  />
+
+  <div
+    id="no-results"
+    style="
+      display: none;
+      text-align: center;
+      color: var(--morado);
+      margin-top: 25px;
+    "
+  >
+    <i class="fa-solid fa-circle-xmark" style="font-size: 3rem; margin-bottom: 10px"></i>
+    <p style="font-family: 'BullesDeChocolats', cursive; font-size: 1.4rem">
+      No se encontraron puntos de venta 🙁
+    </p>
+  </div>
+  
+<!-- cali -->
+  <div class="cards-container">
+    <div class="card" data-city="cali">
+      <div class="card-content">
+        <h3>Cali - Mamateo Helados</h3>
+        <p>📍 Calle 2 # 10-11,san antonio, Colombia</p>
+      </div>
+      <button class="btn-mapa">Ver dirección</button>
+      <div class="mapa">
+        <iframe src="https://www.google.com/maps?q=Parque+de+la+93,+Bogotá,+Colombia&output=embed"></iframe>
+      </div>
+    </div>
+
+    <div class="card" data-city="medellín">
+      <div class="card-content">
+        <h3>Medellín - Pet Planet Laureles</h3>
+        <p>📍 Carrera 80 #33-20, Medellín, Antioquia</p>
+      </div>
+      <button class="btn-mapa">Ver dirección</button>
+      <div class="mapa">
+        <iframe src="https://www.google.com/maps?q=Pet+Planet+Laureles,+Medellín,+Antioquia&output=embed"></iframe>
+      </div>
+    </div>
+
+    <div class="card" data-city="cali">
+      <div class="card-content">
+        <h3>Cali - Parque del Perro</h3>
+        <p>📍 Calle 3 Oeste #34-65, Cali, Valle del Cauca</p>
+      </div>
+      <button class="btn-mapa">Ver dirección</button>
+      <div class="mapa">
+        <iframe src="https://www.google.com/maps?q=Parque+del+Perro,+Cali,+Valle+del+Cauca&output=embed"></iframe>
+      </div>
+    </div>
+  </div>
+
+<div class="cards-container">
+    <div class="card" data-city="cali">
+      <div class="card-content">
+        <h3>Cali - Mamateo Helados</h3>
+        <p>📍 Calle 2 # 10-11,san antonio, Colombia</p>
+      </div>
+      <button class="btn-mapa">Ver dirección</button>
+      <div class="mapa">
+        <iframe src="https://www.google.com/maps?q=Parque+de+la+93,+Bogotá,+Colombia&output=embed"></iframe>
+      </div>
+    </div>
+
+    <div class="card" data-city="medellín">
+      <div class="card-content">
+        <h3>Medellín - Pet Planet Laureles</h3>
+        <p>📍 Carrera 80 #33-20, Medellín, Antioquia</p>
+      </div>
+      <button class="btn-mapa">Ver dirección</button>
+      <div class="mapa">
+        <iframe src="https://www.google.com/maps?q=Pet+Planet+Laureles,+Medellín,+Antioquia&output=embed"></iframe>
+      </div>
+    </div>
+
+    <div class="card" data-city="cali">
+      <div class="card-content">
+        <h3>Cali - Parque del Perro</h3>
+        <p>📍 Calle 3 Oeste #34-65, Cali, Valle del Cauca</p>
+      </div>
+      <button class="btn-mapa">Ver dirección</button>
+      <div class="mapa">
+        <iframe src="https://www.google.com/maps?q=Parque+del+Perro,+Cali,+Valle+del+Cauca&output=embed"></iframe>
+      </div>
+    </div>
+  </div>
+
+  <div class="cards-container">
+    <div class="card" data-city="cali">
+      <div class="card-content">
+        <h3>Cali - Mamateo Helados</h3>
+        <p>📍 Calle 2 # 10-11,san antonio, Colombia</p>
+      </div>
+      <button class="btn-mapa">Ver dirección</button>
+      <div class="mapa">
+        <iframe src="https://www.google.com/maps?q=Parque+de+la+93,+Bogotá,+Colombia&output=embed"></iframe>
+      </div>
+    </div>
+
+    <div class="card" data-city="medellín">
+      <div class="card-content">
+        <h3>Medellín - Pet Planet Laureles</h3>
+        <p>📍 Carrera 80 #33-20, Medellín, Antioquia</p>
+      </div>
+      <button class="btn-mapa">Ver dirección</button>
+      <div class="mapa">
+        <iframe src="https://www.google.com/maps?q=Pet+Planet+Laureles,+Medellín,+Antioquia&output=embed"></iframe>
+      </div>
+    </div>
+
+    <div class="card" data-city="cali">
+      <div class="card-content">
+        <h3>Cali - Parque del Perro</h3>
+        <p>📍 Calle 3 Oeste #34-65, Cali, Valle del Cauca</p>
+      </div>
+      <button class="btn-mapa">Ver dirección</button>
+      <div class="mapa">
+        <iframe src="https://www.google.com/maps?q=Parque+del+Perro,+Cali,+Valle+del+Cauca&output=embed"></iframe>
+      </div>
+    </div>
+  </div>
+
+  <div class="cards-container">
+    <div class="card" data-city="cali">
+      <div class="card-content">
+        <h3>Cali - Mamateo Helados</h3>
+        <p>📍 Calle 2 # 10-11,san antonio, Colombia</p>
+      </div>
+      <button class="btn-mapa">Ver dirección</button>
+      <div class="mapa">
+        <iframe src="https://www.google.com/maps?q=Parque+de+la+93,+Bogotá,+Colombia&output=embed"></iframe>
+      </div>
+    </div>
+
+    <div class="card" data-city="medellín">
+      <div class="card-content">
+        <h3>Medellín - Pet Planet Laureles</h3>
+        <p>📍 Carrera 80 #33-20, Medellín, Antioquia</p>
+      </div>
+      <button class="btn-mapa">Ver dirección</button>
+      <div class="mapa">
+        <iframe src="https://www.google.com/maps?q=Pet+Planet+Laureles,+Medellín,+Antioquia&output=embed"></iframe>
+      </div>
+    </div>
+
+    <div class="card" data-city="cali">
+      <div class="card-content">
+        <h3>Cali - Parque del Perro</h3>
+        <p>📍 Calle 3 Oeste #34-65, Cali, Valle del Cauca</p>
+      </div>
+      <button class="btn-mapa">Ver dirección</button>
+      <div class="mapa">
+        <iframe src="https://www.google.com/maps?q=Parque+del+Perro,+Cali,+Valle+del+Cauca&output=embed"></iframe>
+      </div>
+    </div>
+  </div>
+
+  <div class="cards-container">
+    <div class="card" data-city="cali">
+      <div class="card-content">
+        <h3>Cali - Mamateo Helados</h3>
+        <p>📍 Calle 2 # 10-11,san antonio, Colombia</p>
+      </div>
+      <button class="btn-mapa">Ver dirección</button>
+      <div class="mapa">
+        <iframe src="https://www.google.com/maps?q=Parque+de+la+93,+Bogotá,+Colombia&output=embed"></iframe>
+      </div>
+    </div>
+
+    <div class="card" data-city="medellín">
+      <div class="card-content">
+        <h3>Medellín - Pet Planet Laureles</h3>
+        <p>📍 Carrera 80 #33-20, Medellín, Antioquia</p>
+      </div>
+      <button class="btn-mapa">Ver dirección</button>
+      <div class="mapa">
+        <iframe src="https://www.google.com/maps?q=Pet+Planet+Laureles,+Medellín,+Antioquia&output=embed"></iframe>
+      </div>
+    </div>
+
+    <div class="card" data-city="cali">
+      <div class="card-content">
+        <h3>Cali - Parque del Perro</h3>
+        <p>📍 Calle 3 Oeste #34-65, Cali, Valle del Cauca</p>
+      </div>
+      <button class="btn-mapa">Ver dirección</button>
+      <div class="mapa">
+        <iframe src="https://www.google.com/maps?q=Parque+del+Perro,+Cali,+Valle+del+Cauca&output=embed"></iframe>
+      </div>
+    </div>
+  </div>
+
+  <div class="cards-container">
+    <div class="card" data-city="cali">
+      <div class="card-content">
+        <h3>Cali - Mamateo Helados</h3>
+        <p>📍 Calle 2 # 10-11,san antonio, Colombia</p>
+      </div>
+      <button class="btn-mapa">Ver dirección</button>
+      <div class="mapa">
+        <iframe src="https://www.google.com/maps?q=Parque+de+la+93,+Bogotá,+Colombia&output=embed"></iframe>
+      </div>
+    </div>
+
+    <div class="card" data-city="medellín">
+      <div class="card-content">
+        <h3>Medellín - Pet Planet Laureles</h3>
+        <p>📍 Carrera 80 #33-20, Medellín, Antioquia</p>
+      </div>
+      <button class="btn-mapa">Ver dirección</button>
+      <div class="mapa">
+        <iframe src="https://www.google.com/maps?q=Pet+Planet+Laureles,+Medellín,+Antioquia&output=embed"></iframe>
+      </div>
+    </div>
+
+    <div class="card" data-city="cali">
+      <div class="card-content">
+        <h3>Cali - Parque del Perro</h3>
+        <p>📍 Calle 3 Oeste #34-65, Cali, Valle del Cauca</p>
+      </div>
+      <button class="btn-mapa">Ver dirección</button>
+      <div class="mapa">
+        <iframe src="https://www.google.com/maps?q=Parque+del+Perro,+Cali,+Valle+del+Cauca&output=embed"></iframe>
+      </div>
+    </div>
+  </div>
+
+  <div class="cards-container">
+    <div class="card" data-city="cali">
+      <div class="card-content">
+        <h3>Cali - Mamateo Helados</h3>
+        <p>📍 Calle 2 # 10-11,san antonio, Colombia</p>
+      </div>
+      <button class="btn-mapa">Ver dirección</button>
+      <div class="mapa">
+        <iframe src="https://www.google.com/maps?q=Parque+de+la+93,+Bogotá,+Colombia&output=embed"></iframe>
+      </div>
+    </div>
+
+    <div class="card" data-city="medellín">
+      <div class="card-content">
+        <h3>Medellín - Pet Planet Laureles</h3>
+        <p>📍 Carrera 80 #33-20, Medellín, Antioquia</p>
+      </div>
+      <button class="btn-mapa">Ver dirección</button>
+      <div class="mapa">
+        <iframe src="https://www.google.com/maps?q=Pet+Planet+Laureles,+Medellín,+Antioquia&output=embed"></iframe>
+      </div>
+    </div>
+
+    <div class="card" data-city="cali">
+      <div class="card-content">
+        <h3>Cali - Parque del Perro</h3>
+        <p>📍 Calle 3 Oeste #34-65, Cali, Valle del Cauca</p>
+      </div>
+      <button class="btn-mapa">Ver dirección</button>
+      <div class="mapa">
+        <iframe src="https://www.google.com/maps?q=Parque+del+Perro,+Cali,+Valle+del+Cauca&output=embed"></iframe>
+      </div>
+    </div>
+  </div>
+
+  <div class="cards-container">
+    <div class="card" data-city="cali">
+      <div class="card-content">
+        <h3>Cali - Mamateo Helados</h3>
+        <p>📍 Calle 2 # 10-11,san antonio, Colombia</p>
+      </div>
+      <button class="btn-mapa">Ver dirección</button>
+      <div class="mapa">
+        <iframe src="https://www.google.com/maps?q=Parque+de+la+93,+Bogotá,+Colombia&output=embed"></iframe>
+      </div>
+    </div>
+
+    <div class="card" data-city="medellín">
+      <div class="card-content">
+        <h3>Medellín - Pet Planet Laureles</h3>
+        <p>📍 Carrera 80 #33-20, Medellín, Antioquia</p>
+      </div>
+      <button class="btn-mapa">Ver dirección</button>
+      <div class="mapa">
+        <iframe src="https://www.google.com/maps?q=Pet+Planet+Laureles,+Medellín,+Antioquia&output=embed"></iframe>
+      </div>
+    </div>
+
+    <div class="card" data-city="cali">
+      <div class="card-content">
+        <h3>Cali - Parque del Perro</h3>
+        <p>📍 Calle 3 Oeste #34-65, Cali, Valle del Cauca</p>
+      </div>
+      <button class="btn-mapa">Ver dirección</button>
+      <div class="mapa">
+        <iframe src="https://www.google.com/maps?q=Parque+del+Perro,+Cali,+Valle+del+Cauca&output=embed"></iframe>
+      </div>
+    </div>
+  </div>
+
+  <div class="cards-container">
+    <div class="card" data-city="cali">
+      <div class="card-content">
+        <h3>Cali - Mamateo Helados</h3>
+        <p>📍 Calle 2 # 10-11,san antonio, Colombia</p>
+      </div>
+      <button class="btn-mapa">Ver dirección</button>
+      <div class="mapa">
+        <iframe src="https://www.google.com/maps?q=Parque+de+la+93,+Bogotá,+Colombia&output=embed"></iframe>
+      </div>
+    </div>
+
+    <div class="card" data-city="medellín">
+      <div class="card-content">
+        <h3>Medellín - Pet Planet Laureles</h3>
+        <p>📍 Carrera 80 #33-20, Medellín, Antioquia</p>
+      </div>
+      <button class="btn-mapa">Ver dirección</button>
+      <div class="mapa">
+        <iframe src="https://www.google.com/maps?q=Pet+Planet+Laureles,+Medellín,+Antioquia&output=embed"></iframe>
+      </div>
+    </div>
+
+    <div class="card" data-city="cali">
+      <div class="card-content">
+        <h3>Cali - Parque del Perro</h3>
+        <p>📍 Calle 3 Oeste #34-65, Cali, Valle del Cauca</p>
+      </div>
+      <button class="btn-mapa">Ver dirección</button>
+      <div class="mapa">
+        <iframe src="https://www.google.com/maps?q=Parque+del+Perro,+Cali,+Valle+del+Cauca&output=embed"></iframe>
+      </div>
+    </div>
+  </div>
+
+  <div class="cards-container">
+    <div class="card" data-city="cali">
+      <div class="card-content">
+        <h3>Cali - Mamateo Helados</h3>
+        <p>📍 Calle 2 # 10-11,san antonio, Colombia</p>
+      </div>
+      <button class="btn-mapa">Ver dirección</button>
+      <div class="mapa">
+        <iframe src="https://www.google.com/maps?q=Parque+de+la+93,+Bogotá,+Colombia&output=embed"></iframe>
+      </div>
+    </div>
+
+    <div class="card" data-city="medellín">
+      <div class="card-content">
+        <h3>Medellín - Pet Planet Laureles</h3>
+        <p>📍 Carrera 80 #33-20, Medellín, Antioquia</p>
+      </div>
+      <button class="btn-mapa">Ver dirección</button>
+      <div class="mapa">
+        <iframe src="https://www.google.com/maps?q=Pet+Planet+Laureles,+Medellín,+Antioquia&output=embed"></iframe>
+      </div>
+    </div>
+
+    <div class="card" data-city="cali">
+      <div class="card-content">
+        <h3>Cali - Parque del Perro</h3>
+        <p>📍 Calle 3 Oeste #34-65, Cali, Valle del Cauca</p>
+      </div>
+      <button class="btn-mapa">Ver dirección</button>
+      <div class="mapa">
+        <iframe src="https://www.google.com/maps?q=Parque+del+Perro,+Cali,+Valle+del+Cauca&output=embed"></iframe>
+      </div>
+    </div>
+  </div>
+
+  <div class="cards-container">
+    <div class="card" data-city="cali">
+      <div class="card-content">
+        <h3>Cali - Mamateo Helados</h3>
+        <p>📍 Calle 2 # 10-11,san antonio, Colombia</p>
+      </div>
+      <button class="btn-mapa">Ver dirección</button>
+      <div class="mapa">
+        <iframe src="https://www.google.com/maps?q=Parque+de+la+93,+Bogotá,+Colombia&output=embed"></iframe>
+      </div>
+    </div>
+
+    <div class="card" data-city="medellín">
+      <div class="card-content">
+        <h3>Medellín - Pet Planet Laureles</h3>
+        <p>📍 Carrera 80 #33-20, Medellín, Antioquia</p>
+      </div>
+      <button class="btn-mapa">Ver dirección</button>
+      <div class="mapa">
+        <iframe src="https://www.google.com/maps?q=Pet+Planet+Laureles,+Medellín,+Antioquia&output=embed"></iframe>
+      </div>
+    </div>
+
+    <div class="card" data-city="cali">
+      <div class="card-content">
+        <h3>Cali - Parque del Perro</h3>
+        <p>📍 Calle 3 Oeste #34-65, Cali, Valle del Cauca</p>
+      </div>
+      <button class="btn-mapa">Ver dirección</button>
+      <div class="mapa">
+        <iframe src="https://www.google.com/maps?q=Parque+del+Perro,+Cali,+Valle+del+Cauca&output=embed"></iframe>
+      </div>
+    </div>
+  </div>
+
+  <div class="cards-container">
+    <div class="card" data-city="cali">
+      <div class="card-content">
+        <h3>Cali - Mamateo Helados</h3>
+        <p>📍 Calle 2 # 10-11,san antonio, Colombia</p>
+      </div>
+      <button class="btn-mapa">Ver dirección</button>
+      <div class="mapa">
+        <iframe src="https://www.google.com/maps?q=Parque+de+la+93,+Bogotá,+Colombia&output=embed"></iframe>
+      </div>
+    </div>
+
+    <div class="card" data-city="medellín">
+      <div class="card-content">
+        <h3>Medellín - Pet Planet Laureles</h3>
+        <p>📍 Carrera 80 #33-20, Medellín, Antioquia</p>
+      </div>
+      <button class="btn-mapa">Ver dirección</button>
+      <div class="mapa">
+        <iframe src="https://www.google.com/maps?q=Pet+Planet+Laureles,+Medellín,+Antioquia&output=embed"></iframe>
+      </div>
+    </div>
+
+    <div class="card" data-city="cali">
+      <div class="card-content">
+        <h3>Cali - Parque del Perro</h3>
+        <p>📍 Calle 3 Oeste #34-65, Cali, Valle del Cauca</p>
+      </div>
+      <button class="btn-mapa">Ver dirección</button>
+      <div class="mapa">
+        <iframe src="https://www.google.com/maps?q=Parque+del+Perro,+Cali,+Valle+del+Cauca&output=embed"></iframe>
+      </div>
+    </div>
+  </div>
+
+  <div class="cards-container">
+    <div class="card" data-city="cali">
+      <div class="card-content">
+        <h3>Cali - Mamateo Helados</h3>
+        <p>📍 Calle 2 # 10-11,san antonio, Colombia</p>
+      </div>
+      <button class="btn-mapa">Ver dirección</button>
+      <div class="mapa">
+        <iframe src="https://www.google.com/maps?q=Parque+de+la+93,+Bogotá,+Colombia&output=embed"></iframe>
+      </div>
+    </div>
+
+    <div class="card" data-city="medellín">
+      <div class="card-content">
+        <h3>Medellín - Pet Planet Laureles</h3>
+        <p>📍 Carrera 80 #33-20, Medellín, Antioquia</p>
+      </div>
+      <button class="btn-mapa">Ver dirección</button>
+      <div class="mapa">
+        <iframe src="https://www.google.com/maps?q=Pet+Planet+Laureles,+Medellín,+Antioquia&output=embed"></iframe>
+      </div>
+    </div>
+
+    <div class="card" data-city="cali">
+      <div class="card-content">
+        <h3>Cali - Parque del Perro</h3>
+        <p>📍 Calle 3 Oeste #34-65, Cali, Valle del Cauca</p>
+      </div>
+      <button class="btn-mapa">Ver dirección</button>
+      <div class="mapa">
+        <iframe src="https://www.google.com/maps?q=Parque+del+Perro,+Cali,+Valle+del+Cauca&output=embed"></iframe>
+      </div>
+    </div>
+  </div>
+
+  <div class="cards-container">
+    <div class="card" data-city="cali">
+      <div class="card-content">
+        <h3>Cali - Mamateo Helados</h3>
+        <p>📍 Calle 2 # 10-11,san antonio, Colombia</p>
+      </div>
+      <button class="btn-mapa">Ver dirección</button>
+      <div class="mapa">
+        <iframe src="https://www.google.com/maps?q=Parque+de+la+93,+Bogotá,+Colombia&output=embed"></iframe>
+      </div>
+    </div>
+
+    <div class="card" data-city="medellín">
+      <div class="card-content">
+        <h3>Medellín - Pet Planet Laureles</h3>
+        <p>📍 Carrera 80 #33-20, Medellín, Antioquia</p>
+      </div>
+      <button class="btn-mapa">Ver dirección</button>
+      <div class="mapa">
+        <iframe src="https://www.google.com/maps?q=Pet+Planet+Laureles,+Medellín,+Antioquia&output=embed"></iframe>
+      </div>
+    </div>
+
+    <div class="card" data-city="cali">
+      <div class="card-content">
+        <h3>Cali - Parque del Perro</h3>
+        <p>📍 Calle 3 Oeste #34-65, Cali, Valle del Cauca</p>
+      </div>
+      <button class="btn-mapa">Ver dirección</button>
+      <div class="mapa">
+        <iframe src="https://www.google.com/maps?q=Parque+del+Perro,+Cali,+Valle+del+Cauca&output=embed"></iframe>
+      </div>
+    </div>
+  </div>
+
+  <div class="cards-container">
+    <div class="card" data-city="cali">
+      <div class="card-content">
+        <h3>Cali - Mamateo Helados</h3>
+        <p>📍 Calle 2 # 10-11,san antonio, Colombia</p>
+      </div>
+      <button class="btn-mapa">Ver dirección</button>
+      <div class="mapa">
+        <iframe src="https://www.google.com/maps?q=Parque+de+la+93,+Bogotá,+Colombia&output=embed"></iframe>
+      </div>
+    </div>
+
+    <div class="card" data-city="medellín">
+      <div class="card-content">
+        <h3>Medellín - Pet Planet Laureles</h3>
+        <p>📍 Carrera 80 #33-20, Medellín, Antioquia</p>
+      </div>
+      <button class="btn-mapa">Ver dirección</button>
+      <div class="mapa">
+        <iframe src="https://www.google.com/maps?q=Pet+Planet+Laureles,+Medellín,+Antioquia&output=embed"></iframe>
+      </div>
+    </div>
+
+    <div class="card" data-city="cali">
+      <div class="card-content">
+        <h3>Cali - Parque del Perro</h3>
+        <p>📍 Calle 3 Oeste #34-65, Cali, Valle del Cauca</p>
+      </div>
+      <button class="btn-mapa">Ver dirección</button>
+      <div class="mapa">
+        <iframe src="https://www.google.com/maps?q=Parque+del+Perro,+Cali,+Valle+del+Cauca&output=embed"></iframe>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<footer>
+  <p style="text-align: center; padding: 20px; background: #ddd; margin-top: 40px">
+    © 2025 Sr. Waff. Todos los derechos reservados.
+  </p>
+</footer>
+
+<script>
+// HAMBURGUESA
+const hamburger = document.getElementById("hamburger");
+const menu = document.getElementById("menu");
+
+hamburger.addEventListener("click", () => {
+  menu.classList.toggle("show");
+  hamburger.style.display = "none";
+  closeIcon.style.display = "block";
+});
+
+closeIcon.addEventListener("click", () => {
+  menu.classList.toggle("show");
+  closeIcon.style.display = "none";
+  hamburger.style.display = "block";
+});("click", () => {
+  menu.classList.toggle("show");
+  hamburger.classList.toggle("active");
+});
+
+// MAPAS
+document.querySelectorAll(".btn-mapa").forEach((btn) => {
+  btn.addEventListener("click", () => {
+    const mapa = btn.nextElementSibling;
+    if (mapa.style.height === "300px") {
+      mapa.style.height = "0";
+      btn.textContent = "Ver dirección";
+    } else {
+      mapa.style.height = "300px";
+      btn.textContent = "Ocultar mapa";
+    }
+  });
+});
+
+// BUSCADOR
+const searchInput = document.getElementById("search");
+const cards = document.querySelectorAll(".card");
+const noResults = document.getElementById("no-results");
+
+searchInput.addEventListener("input", () => {
+  const filter = searchInput.value.toLowerCase();
+  let visibleCount = 0;
+
+  cards.forEach((card) => {
+    const city = card.dataset.city.toLowerCase();
+    const title = card.querySelector("h3").textContent.toLowerCase();
+
+    if (city.includes(filter) || title.includes(filter)) {
+      card.style.display = "block";
+      visibleCount++;
+    } else {
+      card.style.display = "none";
+    }
+  });
+
+  noResults.style.display = visibleCount === 0 ? "block" : "none";
+});
+</script>
+</body>
+</html>
